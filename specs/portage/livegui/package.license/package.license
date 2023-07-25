@@ -1,0 +1,4 @@
+# Allow linux-firmware and other required packages in @BINARY-REDISTRIBUTABLE
+# license group
+*/* @BINARY-REDISTRIBUTABLE
+www-client/* Vivaldi

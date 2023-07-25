@@ -1,0 +1,80 @@
+diff --git a/tools/catalyst-auto b/tools/catalyst-auto
+index 2dab0185..275803ab 100755
+--- a/tools/catalyst-auto
++++ b/tools/catalyst-auto
+@@ -17,8 +17,8 @@ EMAIL_SUBJECT_PREPEND="[${SUBARCH}-auto]"
+ # Variables updated by command line arguments.
+ declare -a config_files
+ config_files=()
+-verbose=0
+-keep_tmpdir=0
++verbose=1
++keep_tmpdir=1
+ testing=0
+ preclean=0
+ lastrun=0
+@@ -35,10 +35,11 @@ usage() {
+ 
+ 	cat <<EOH
+ Usage:
+-  catalyst-auto [-c|--config <config>] [-v|--verbose] [-h|--help]
++  catalyst-auto [-c|--config <config>] [-p|--prebuilt <timestring>] [-v|--verbose] [-h|--help]
+ 
+ Options:
+   -c|--config         Specifies the config file to use (required)
++  -p|--prebuilt       Specifies prebuilt timestamp of stage file (required)
+   -C|--preclean       Clean up loose artifacts from previous runs
+   -j|--jobs <n>       Build <n> spec sets in parallel
+   -v|--verbose        Send output of commands to console as well as log
+@@ -72,9 +73,9 @@ send_email() {
+ 		body=${message}
+ 	fi
+ 
+-	printf 'From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%b' \
+-		"${EMAIL_FROM}" "${EMAIL_TO}" "${subject}" "${body}" | \
+-		/usr/sbin/sendmail -f "${EMAIL_FROM}" ${EMAIL_TO//,/ }
++	# printf 'From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%b' \
++	# 	"${EMAIL_FROM}" "${EMAIL_TO}" "${subject}" "${body}" | \
++	# 	/usr/sbin/sendmail -f "${EMAIL_FROM}" ${EMAIL_TO//,/ }
+ }
+ 
+ # Usage: run_cmd <logfile> <command to run>
+@@ -146,6 +147,10 @@ parse_args() {
+ 			config_files+=("$1")
+ 			shift
+ 			;;
++		-p|--prebuilt)
++			prebuilt_timestamp+=("$1")
++			shift
++			;;
+ 		-j|--jobs)
+ 			parallel_sets="$1"
+ 			shift
+@@ -354,6 +359,14 @@ run_catalyst_commands() {
+ 			exit 1
+ 		fi
+ 	fi
++
++	if [[ -z "${prebuilt_timestamp}" ]]; then #  || ! -e "${prebuilt_timestamp}"
++		usage "ERROR: You must specify a valid timestamp of prebuilt stage"
++		exit 1
++	else
++		TIMESTAMP=${prebuilt_timestamp}
++	fi
++
+ 	DATESTAMP=$(date -u +%Y%m%d)
+ 	TMPDIR=$(mktemp -d --tmpdir="${TMP_PATH:-/tmp}" "catalyst-auto.${TIMESTAMP}.XXXXXX")
+ 
+@@ -545,10 +558,10 @@ main() {
+ 	parse_args "$@"
+ 
+ 	# Update the release git dir if possible.
+-	git_update "$@"
++	# git_update "$@"
+ 
+ 	# Verify DNSSEC works
+-	verify_dnssec
++	# verify_dnssec
+ 
+ 	# Try to isolate ourselves from the rest of the system.
+ 	containerize "$@"

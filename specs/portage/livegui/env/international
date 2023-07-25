@@ -1,0 +1,6 @@
+# https://en.wikipedia.org/wiki/List_of_languages_by_total_number_of_speakers
+
+LINGUAS="en en-GB en-US ko-KR"
+
+L10N=${LINGUAS}
+
