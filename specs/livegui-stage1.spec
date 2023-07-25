@@ -133,8 +133,10 @@ livecd/packages:
 	net-misc/dhcp
 
 	# gui applications
-	net-misc/connman-ui
-	net-misc/connman-notify
+	# net-misc/connman-ui
+	# net-misc/connman-notify
+	net-misc/networkmanager
+	gnome-extra/nm-applet
 	x11-terms/alacritty
 	x11-misc/pcmanfm
 	net-im/telegram-desktop

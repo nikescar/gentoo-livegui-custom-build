@@ -153,8 +153,8 @@ mmaker -t Alacritty JWM -c > .jwmrc
 # font change
 sed -i 's/<Font>Sans-9/<Font>NanumGothic/' .jwmrc
 
-# jwmrc start
-sed -i 's/<JWM>/<JWM><StartupCommand>Alacritty<\/StartupCommand><StartupCommand>vivaldi-snapshot<\/StartupCommand><StartupCommand>scim<\/StartupCommand><StartupCommand>.config\/conky\/start-lcc.sh<\/StartupCommand>/g' .jwmrc
+# jwmrc start 
+sed -i 's/<JWM>/<JWM><StartupCommand>nm-applet<\/StartupCommand><StartupCommand>Alacritty<\/StartupCommand><StartupCommand>vivaldi-snapshot<\/StartupCommand><StartupCommand>scim<\/StartupCommand><StartupCommand>.config\/conky\/start-lcc.sh<\/StartupCommand>/g' .jwmrc
 
 # Autostart keyboard layout module
 # mkdir -p .config/autostart
