@@ -77,7 +77,7 @@ livecd/use:
 livecd/packages:
 	# wm comparison - https://l3net.wordpress.com/2013/03/17/a-memory-comparison-of-light-linux-desktops/
 	# Xorg base
-	sys-auth/seatd
+	# sys-auth/seatd
 	x11-base/xorg-server
 	x11-apps/xrandr
 
@@ -139,6 +139,8 @@ livecd/packages:
 	gnome-extra/nm-applet
 	x11-terms/alacritty
 	x11-misc/pcmanfm
+	media-libs/libpng
+	gnome-base/librsvg
 	net-im/telegram-desktop
 	app-admin/conky
 	# games-emulation/dosbox-staging
@@ -148,8 +150,6 @@ livecd/packages:
 	# net-misc/seafile-client
 	net-misc/tigervnc
 	# net-p2p/deluge
-	dev-util/pycharm-community
-	app-editors/logseq-desktop-bin
 
 	# gui memo apps
 	# app-text/obsidian
@@ -160,6 +160,9 @@ livecd/packages:
 	# editors
 	app-editors/vscodium
 	dev-util/meld
+	app-editors/logseq-desktop-bin
+	# app-editors/typora-bin
+	dev-util/pycharm-community
 
 	# virtualization
 	app-containers/docker 
@@ -258,3 +261,5 @@ livecd/packages:
 	sys-kernel/linux-firmware
 	sys-process/htop
 	sys-process/lsof
+	sys-process/glances
+

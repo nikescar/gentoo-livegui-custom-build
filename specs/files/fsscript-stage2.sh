@@ -116,10 +116,84 @@ wget --no-hsts -cN https://download-fallback.gnome.org/sources/cantarell-fonts/0
 tar -xvf cantarell*.tar.xz --strip-components 2 --wildcards -C .fonts/Cantarell/ \*/\*/Cantarell-VF.otf
 rm -rf cantarell*.tar.xz
 
+# conv icons app
+cat <<EOF >  /bin/convicon24.sh
+#!/bin/bash
+if [ -z "\${1}" ] || [ ! -d "\${1}" ];then
+ echo "Please input correct source directy path."
+ echo "Usage: convert all svg files from src dir to target dir"
+ echo "convicon24.sh src_dir target_dir"
+ exit 1
+fi
+if [ -z "\${2}" ] || [ ! -d "\${2}" ] ;then
+ echo "Please input correct target directy path."
+ echo "Usage: convert all svg files from src dir to target dir"
+ echo "convicon24.sh src_dir target_dir"
+ exit 1
+fi
+for filepath in \${1}/*; do
+  filename="\$(basename -s .gz \$filepath)"
+  if [[ \$filename == *.svg ]];then
+    echo "\${1}/\${filename:-4}.svg -> \${2}/\${filename:-4}.png"
+    rsvg-convert -w 24 -h 24 -o \${2}/\${filename::-3}png \${1}/\$filename
+  fi
+done
+EOF
+chmod 755 /bin/convicon24.sh
+
 # icons install
-wget -q -O - "https://github.com/owl4ce/dotfiles/releases/download/ng/Gladient_JfD.tar.xz" | tar Jxvf - -C /usr/share/icons/
-wget -q -O - "https://github.com/owl4ce/dotfiles/releases/download/ng/Papirus-Custom.tar.xz" | tar Jxvf - -C /usr/share/icons/
-wget -q -O - "https://github.com/owl4ce/dotfiles/releases/download/ng/Papirus-Dark-Custom.tar.xz" | tar Jxvf - -C /usr/share/icons/
+ICONS_DIR="../../usr/share/icons"
+mkdir -p $ICONS_DIR/jwm
+wget -q -O - "https://github.com/owl4ce/dotfiles/releases/download/ng/Gladient_JfD.tar.xz" | tar Jxvf - -C $ICONS_DIR/
+cp -rf $ICONS_DIR/Gladient/* $ICONS_DIR/jwm
+wget -q -O - "https://github.com/numixproject/numix-icon-theme-circle/archive/refs/tags/23.07.21.tar.gz" | tar zxvf - -C $ICONS_DIR/
+/bin/convicon24.sh $ICONS_DIR/numix-icon-theme-circle-23.07.21/Numix-Circle/48/apps $ICONS_DIR/jwm
+wget -q -O - "https://github.com/vinceliuice/Qogir-icon-theme/archive/refs/tags/2023-06-05.tar.gz" | tar zxvf - -C $ICONS_DIR/
+/bin/convicon24.sh $ICONS_DIR/Qogir-icon-theme-2023-06-05/src/scalable/actions $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/Qogir-icon-theme-2023-06-05/src/scalable/apps $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/Qogir-icon-theme-2023-06-05/src/scalable/devices $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/Qogir-icon-theme-2023-06-05/src/scalable/places $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/Qogir-icon-theme-2023-06-05/src/scalable/status $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/Qogir-icon-theme-2023-06-05/src/scalable/mimetypes $ICONS_DIR/jwm
+wget -q -O - "https://github.com/vinceliuice/vimix-icon-theme/archive/refs/tags/2023-06-26.tar.gz" | tar zxvf - -C $ICONS_DIR/
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/apps $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/categories $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/devices $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/mimetypes $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/places $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/preferences $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/vimix-icon-theme-2023-06-26/src/scalable/status $ICONS_DIR/jwm
+wget -q -O - "https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/archive/refs/tags/20230601.tar.gz" | tar zxvf - -C $ICONS_DIR/
+/bin/convicon24.sh $ICONS_DIR/papirus-icon-theme-20230601/Papirus/64x64/apps $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/papirus-icon-theme-20230601/Papirus/64x64/devices $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/papirus-icon-theme-20230601/Papirus/64x64/mimetypes $ICONS_DIR/jwm
+/bin/convicon24.sh $ICONS_DIR/papirus-icon-theme-20230601/Papirus/64x64/places $ICONS_DIR/jwm
+
+# pcmanfm rightclick menu
+mkdir -p .local/share/file-manager/actions
+echo "[Desktop Entry]
+Type=Action
+Tooltip=Open Terminal
+Name=Open Terminal
+Profiles=profile-one;
+Icon=utilities-terminal
+
+[X-Action-Profile profile-one]
+MimeTypes=inode/directory;
+Exec=alacritty --working-directory %f
+Name=Default profile" > .local/share/file-manager/actions/terminal.desktop
+
+echo "[Desktop Entry]
+Type=Action
+Tooltip=Open VSCodium
+Name=Open VSCodium
+Profiles=profile-one;
+Icon=utilities-terminal
+
+[X-Action-Profile profile-one]
+MimeTypes=inode/directory;
+Exec=vscodium %f
+Name=Default profile" > .local/share/file-manager/actions/vscodium.desktop
 
 # Vivaldi as default browser
 echo \
@@ -148,13 +222,79 @@ for i in "${APPS[@]}"; do
 done
 
 # generate JWM menu
-mmaker -t Alacritty JWM -c > .jwmrc
+mkdir -p .jwm
+mmaker -t Alacritty JWM -c > .jwm/mmaker.jwm
 
 # font change
-sed -i 's/<Font>Sans-9/<Font>NanumGothic/' .jwmrc
+sed -i 's/<Font>Sans-9/<Font>NanumGothic/' .jwm/mmaker.jwm
+# icon path change 
+sed -i 's/\/usr\/share\/icons\/wm-icons\/32x32-aquafusion/\/usr\/share\/icons\/jwm\//' .jwm/mmaker.jwm
 
-# jwmrc start 
-sed -i 's/<JWM>/<JWM><StartupCommand>nm-applet<\/StartupCommand><StartupCommand>Alacritty<\/StartupCommand><StartupCommand>vivaldi-snapshot<\/StartupCommand><StartupCommand>scim<\/StartupCommand><StartupCommand>.config\/conky\/start-lcc.sh<\/StartupCommand>/g' .jwmrc
+# generate .jwmrc
+cat <<EOF > .jwmrc
+<?xml version="1.0"?>
+<JWM>
+    <StartupCommand>nm-connection-editor</StartupCommand>
+    <StartupCommand>alacritty</StartupCommand>
+    <StartupCommand>vivaldi-snapshot</StartupCommand>
+    <StartupCommand>scim</StartupCommand>
+    <StartupCommand>.config/conky/start-lcc.sh</StartupCommand>
+
+    <Include>.jwm/mmaker.jwm</Include>
+    
+    <!-- Tray at the bottom. -->
+    <Tray x="0" y="-1" autohide="off">
+        <TrayButton icon="appimagekit-stretchly.png" popup="start">root:1</TrayButton>
+        <Spacer width="2"/>
+        <TrayButton icon="folder-white-desktop.png">showdesktop</TrayButton>
+        <TrayButton icon="networkmanager.png">exec:nm-connection-editor</TrayButton>
+        <Spacer width="2"/>
+        <TrayButton icon="Alacritty.png">exec:alacritty</TrayButton>
+        <TrayButton icon="vivaldi-snapshot.png">exec:vivaldi-snapshot</TrayButton>
+        <TrayButton icon="filemanager-actions.png">exec:pcmanfm</TrayButton>
+        <TrayButton icon="vscodium.png">exec:vscodium</TrayButton>
+        <TrayButton icon="telegram-desktop.png">exec:telegram-desktop</TrayButton>
+        <TrayButton icon="logseq.png">exec:logseq</TrayButton>
+        <TrayButton icon="meld.png">exec:meld</TrayButton>
+        <TrayButton icon="pycharm-community.png">exec:pycharm-community</TrayButton>
+        <Pager labeled="true"/>
+        <TaskList maxwidth="256"/>
+        <Dock/>
+        <Clock format="%H:%M"><Button mask="123">exec:xclock</Button></Clock>
+    </Tray>
+
+    <!-- Options for program groups. -->
+    <Group>
+        <Option>tiled</Option>
+        <Option>aerosnap</Option>
+    </Group>
+    <Group>
+        <Class>telegram-desktop</Class>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>Alacritty</Name>
+        <Option>vmax</Option>
+    </Group>
+    <Group>
+        <Name>xclock</Name>
+        <Option>drag</Option>
+        <Option>notitle</Option>
+    </Group>
+
+    <!-- Path where icons can be found.
+         IconPath can be listed multiple times to allow searching
+         for icons in multiple paths.
+      -->
+    <IconPath>
+        /usr/share/icons/jwm/
+    </IconPath>
+
+    <!-- Alt + f -->
+    <Key mask="A" key="f">exec:pcmanfm</Key>
+    <Key mask="A" key="t">exec:alacritty</Key>
+</JWM>
+EOF
 
 # Autostart keyboard layout module
 # mkdir -p .config/autostart

@@ -23,4 +23,4 @@ x11-libs/libfm ~amd64
 app-containers/waydroid ~amd64
 dev-python/gbinder ~amd64
 dev-python/pyclip ~amd64
-
+app-editors/typora-bin ~amd64

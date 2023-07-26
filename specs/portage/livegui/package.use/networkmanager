@@ -1,0 +1,1 @@
+networkmanager -audit -bluetooth -concheck -connection-sharing -debug -dhcpd -elogind -gtk-doc -ofono ovs policikit -ppp -psl -selinux -syslog -resolvconf

@@ -2,3 +2,4 @@
 # license group
 */* @BINARY-REDISTRIBUTABLE
 www-client/* Vivaldi
+app-editors/typora-bin Typora-EULA

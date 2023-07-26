@@ -26,4 +26,33 @@ boot/kernel: gentoo
 boot/kernel/gentoo/sources: gentoo-sources
 
 boot/kernel/gentoo/config: @REPO_DIR@/releases/kconfig/amd64/amd64-6.1.38.config
-boot/kernel/gentoo/packages: --usepkg n zfs zfs-kmod net-misc/r8152 app-emulation/virtualbox app-emulation/virtualbox-additions app-emulation/virtualbox-modules net-misc/r8152
+boot/kernel/gentoo/packages: 
+	--usepkg 
+	n 
+	zfs 
+	zfs-kmod 
+	
+	# virtualization
+	app-emulation/virtualbox 
+	app-emulation/virtualbox-additions 
+	app-emulation/virtualbox-modules
+
+	# network drivers 
+	net-misc/r8152
+
+	# graphic drivers
+	# software
+	x11-drivers/xf86-video-fbdev
+	x11-drivers/xf86-video-dummy
+	# physical - old
+	# x11-drivers/xf86-video-ati
+	# x11-drivers/xf86-video-vesa
+	x11-drivers/xf86-video-intel
+	# pysical - new
+	x11-drivers/nvidia-drivers
+	x11-drivers/xf86-video-amdgpu	
+	
+	# virtualized drivers
+	x11-drivers/xf86-video-qxl
+	x11-drivers/xf86-video-vboxvideo	
+	

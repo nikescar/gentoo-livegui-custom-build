@@ -44,7 +44,7 @@ jobs = 24 # to use 24 parallel processors
 
 ## Changing Package Repository
 
-To change package repository, for installation repo setting is located in [update_iso.sh](update_iso.sh)
+To change package repository, for installation repo. setting is located in [update_iso.sh](update_iso.sh)
 ```bash
 REPO_URL="https://ftp.kaist.ac.kr/gentoo/releases/"
 ```
@@ -130,11 +130,11 @@ boot/kernel/gentoo/packages: --usepkg n zfs zfs-kmod net-misc/r8152 app-emulatio
 
 # Status
 * <b>jwm</b> is for main windows manager. run with startx command.
-* there is no network manager on default build.
 
 # Todo
 * there is error starting xdm. need to remove it.
 * kernel config replacement on starting.
+* tui script or gui app for home dir changing helper.
 
 # Related Projects
 * [catalyst](https://gitweb.gentoo.org/proj/catalyst.git/) 
