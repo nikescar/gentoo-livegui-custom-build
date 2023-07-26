@@ -42,17 +42,17 @@ boot/kernel/gentoo/packages:
 
 	# graphic drivers
 	# software
-	x11-drivers/xf86-video-fbdev
-	x11-drivers/xf86-video-dummy
+	# x11-drivers/xf86-video-fbdev
+	# x11-drivers/xf86-video-dummy
 	# physical - old
 	# x11-drivers/xf86-video-ati
 	# x11-drivers/xf86-video-vesa
-	x11-drivers/xf86-video-intel
+	# x11-drivers/xf86-video-intel
 	# pysical - new
-	x11-drivers/nvidia-drivers
-	x11-drivers/xf86-video-amdgpu	
+	# x11-drivers/nvidia-drivers
+	# x11-drivers/xf86-video-amdgpu	
 	
 	# virtualized drivers
-	x11-drivers/xf86-video-qxl
-	x11-drivers/xf86-video-vboxvideo	
+	# x11-drivers/xf86-video-qxl
+	# x11-drivers/xf86-video-vboxvideo	
 	
