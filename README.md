@@ -127,7 +127,7 @@ boot/kernel/gentoo/packages: --usepkg n zfs zfs-kmod net-misc/r8152 app-emulatio
 # Disclaimer
 * ATM, it's working for <b>AMD64</b> build only.
 * becareful with <b>emerge --sync</b> command. it may be streeful to gentoo git server. be sure to distribute your requests by using national mirror or local mirror.
-* Adding xf86 based kernel drivers makes failed to boot on 13th Intel CPUs system.
+* it is failed to boot on 13th Intel CPUs system. the error occurs when boot starts, shows, <b>/newroot/dev/tty0</b> file exists.
 
 # Status
 * <b>jwm</b> is for main windows manager. run with startx command.

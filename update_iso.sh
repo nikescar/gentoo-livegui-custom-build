@@ -12,7 +12,13 @@ BUILD_SRCDIR="${BUILD_SRCDIR_BASE}/builds/default/"
 # install nessasary apps
 if ! command -v catalyst &> /dev/null
 then
-    emerge catalyst eselect 
+    mkdir -p /etc/portage/package.keywords && \
+    echo "dev-util/catalyst **" >> /etc/portage/package.keywords/catalyst && \
+    echo "dev-util/catalyst \"~amd64\"" >> /etc/portage/package.accept_keywords/catalyst && \
+    FEATURES="-ipc-sandbox -network-sandbox -pid-sandbox" emerge =dev-util/catalyst-9999 eselect dev-vcs/git  \
+    --autounmask-write --autounmask --autounmask-backtrack=y --backtrack=100 || true && \
+    yes | etc-update --automode -3 && \
+    emerge =dev-util/catalyst-9999 eselect dev-vcs/git
 fi
 
 # add new hardened profile
@@ -28,7 +34,7 @@ cp catalyst.conf /etc/catalyst/catalyst.conf
 # update releng repository
 if [[ ! -d ./releng ]]; then
     echo "cloning releng git repository..."
-    git clone https://gitweb.gentoo.org/proj/releng.git releng
+    git clone https://github.com/gentoo/releng.git releng
 else
     echo "updating releng git repository..."
     pushd "./releng" >/dev/null

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # set upstream portage repository for later use
 set -x \
 && mkdir -p /etc/portage/repos.conf \
